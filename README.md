@@ -102,7 +102,7 @@ rules:
 ```
 
 ```shell
-docker run -d --name molly_mysql_canal -v /etc/molly_mysql_canal/config.yaml:/apps/config.yaml --restart=always thousmile/molly_mysql_canal:1.0
+docker run -d --name molly_mysql_canal -v /etc/molly_mysql_canal/config.yaml:/work/config.yaml --restart=always thousmile/molly_mysql_canal:1.0
 ```
 
 vim docker-compose.yml
@@ -114,7 +114,7 @@ services:
     image: thousmile/molly_mysql_canal:1.0
     container_name: molly_mysql_canal
     volumes:
-      - /etc/molly_mysql_canal/config.yaml:/apps/config.yaml
+      - /etc/molly_mysql_canal/config.yaml:/work/config.yaml
       - /etc/localtime:/etc/localtime:ro
     privileged: true
     restart: always
