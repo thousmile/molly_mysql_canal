@@ -18,16 +18,7 @@ builds:
     # Default: [ '386', 'amd64', 'arm64' ].
     goarch:
       - amd64
-      - arm
       - arm64
-
-    # Default: [ 6 ].
-    goarm:
-      - 7
-
-    # Default: [ 'v1' ].
-    goamd64:
-      - v3
 
 archives:
   - format: tar.gz
