@@ -2,6 +2,9 @@ HELP.md
 target/
 dist/
 
+go.mod
+go.sum
+
 ### STS ###
 .apt_generated
 .classpath
