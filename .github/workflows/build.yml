@@ -26,4 +26,4 @@ jobs:
         with:
           platforms: linux/amd64,linux/arm64,linux/arm
           push: true
-          tags: user/app:latest
+          tags: thousmile/molly_mysql_canal:1.0
