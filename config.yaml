@@ -1,0 +1,48 @@
+appName: molly-mysql-canal
+
+mysql:
+  addr: 192.168.0.188:3306
+  username: canal
+  password: canal
+  serverId: 88
+
+redis:
+  addrs:
+    - 192.168.0.188:6379
+  db: 5
+  #username: redis123
+  #password: redis123456
+  #masterName: mymaster
+  #sentinelUsername: sentinel123456
+  #sentinelPassword: sentinel123456
+
+rules:
+  - mysql_cms_device_to_redis:
+      tableRegex: molly_.*\.cms_device
+      initData: true
+      clearBeforeData: true
+      serializationFormat: json # msgpack、json
+      #customPKColumn: id
+      #includeColumnNames:
+      #  - username
+      fieldNameFormat: lowerCamelCase # lowerCamelCase、upperCamelCase、default
+      syncTarget: redis
+      redisRule:
+        keyName: cms_device
+        keyType: hash   # string or hash
+
+  - mysql_ml_device_to_redis:
+      tableRegex: hello1.ml_device\b
+      initData: true
+      clearBeforeData: true
+      serializationFormat: json # msgpack、json
+      excludeColumnNames:
+        - create_time
+        - create_user
+        - last_update_time
+        - last_update_user
+      fieldNameFormat: lowerCamelCase # lowerCamelCase、upperCamelCase、default
+      syncTarget: redis
+      redisRule:
+        keyName: ml_device
+        keyType: hash   # string or hash
