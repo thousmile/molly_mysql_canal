@@ -8,7 +8,7 @@ RUN go mod download
 COPY . .
 RUN go build -o /build/app
 
-FROM debian:bookworm
+FROM debian:stable-slim
 WORKDIR /work/
 COPY --from=builder --chown=1001:root /build/app /work/app
 COPY --from=builder --chown=1001:root /build/config.yaml /work/config.yaml
