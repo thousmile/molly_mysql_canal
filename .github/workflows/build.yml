@@ -2,8 +2,8 @@ name: ci
 
 on:
   push:
-    branches:
-      - master
+    tags:
+      - *
 
 jobs:
   docker:
@@ -11,6 +11,10 @@ jobs:
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
+
+      - name: Get tag version
+        run: |
+          echo "Tag version: ${{ github.event.release.tag_name }}"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -26,4 +30,4 @@ jobs:
         with:
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: thousmile/molly_mysql_canal:1.0
+          tags: ${{ vars.DOCKERHUB_REPOSITORIES }}/molly_mysql_canal:${{ github.event.release.tag_name }}
