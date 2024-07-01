@@ -2,7 +2,8 @@ name: ci
 
 on:
   push:
-    tags: [ * ]
+    tags:
+      - "*"
 
 jobs:
   docker:
