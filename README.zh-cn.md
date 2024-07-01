@@ -101,6 +101,22 @@ rules:
 
 ```
 
+#### 提示：protobuf格式，使用google/protobuf/struct.proto作为交互格式
+##### java 案例
+```java
+var bytes = new byte[]{};
+var obj = Struct.parseFrom(bytes);
+System.out.println(obj);
+```
+
+##### golang 案例
+```go
+var bytes []byte
+var obj structpb.Struct
+_ = proto.Unmarshal(bytes, &obj)
+fmt.Println(obj.String())
+```
+
 ```shell
 docker run -d --name molly_mysql_canal -v /etc/molly_mysql_canal/config.yaml:/work/config.yaml --restart=always thousmile/molly_mysql_canal:1.0
 ```

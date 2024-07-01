@@ -107,6 +107,22 @@ rules:
 
 ```
 
+#### Tip: protobuf format, use google/protobuf/struct.proto as the intermediary
+##### java example
+```java
+var bytes = new byte[]{};
+var obj = Struct.parseFrom(bytes);
+System.out.println(obj);
+```
+
+##### golang example
+```go
+var bytes []byte
+var obj structpb.Struct
+_ = proto.Unmarshal(bytes, &obj)
+fmt.Println(obj.String())
+```
+
 ```shell
 docker run -d --name molly_mysql_canal -v /etc/molly_mysql_canal/config.yaml:/work/config.yaml --restart=always thousmile/molly_mysql_canal:1.0
 ```
