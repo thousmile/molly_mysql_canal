@@ -69,7 +69,7 @@ rules:
       #clear previous data, only supports redis
       clearBeforeData: true
 
-      #serialization method [msgpack、json] default: json
+      #serialization method [msgpack、json、yaml、protobuf] default: json
       serializationFormat: json
 
       #custom primary key field. Get the first primary key in the table by default.

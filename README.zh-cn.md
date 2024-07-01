@@ -64,7 +64,7 @@ rules:
       #是否清空之前的数据，仅支持redis
       clearBeforeData: true
 
-      #序列化方式 msgpack、json 默认: json
+      #序列化方式 支持[msgpack、json、yaml、protobuf] 默认: json
       serializationFormat: json
 
       #自定义 主键字段。默认获取表中的第一个主键。

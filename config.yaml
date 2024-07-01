@@ -21,7 +21,7 @@ rules:
       tableRegex: molly_.*\.cms_device
       initData: true
       clearBeforeData: true
-      serializationFormat: json # msgpack、json
+      serializationFormat: yaml # msgpack、json、yaml、protobuf
       #customPKColumn: id
       #includeColumnNames:
       #  - username
@@ -35,7 +35,7 @@ rules:
       tableRegex: hello1.ml_device\b
       initData: true
       clearBeforeData: true
-      serializationFormat: json # msgpack、json
+      serializationFormat: protobuf # msgpack、json、yaml、protobuf
       excludeColumnNames:
         - create_time
         - create_user

@@ -1,14 +1,11 @@
 package main
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
 	"github.com/go-mysql-org/go-mysql/canal"
 	"github.com/redis/go-redis/v9"
 	"github.com/samber/lo"
-	"github.com/vmihailenco/msgpack/v5"
 	"log/slog"
 	"slices"
 	"strings"
@@ -105,15 +102,7 @@ func (c *RedisConsumer) insert(list []*EventData) {
 				newMap[ConvertColumn(c.FieldNameFormat, column)] = value
 			}
 		}
-		var buf bytes.Buffer
-		switch c.SerializationFormat {
-		case "msgpack":
-			_ = msgpack.NewEncoder(&buf).Encode(newMap)
-			break
-		default:
-			_ = json.NewEncoder(&buf).Encode(newMap)
-			break
-		}
+		buf := ConvertSerializationFormat(c.SerializationFormat, newMap)
 		if c.KeyType == "hash" {
 			return id, buf.String()
 		} else {

@@ -88,7 +88,7 @@ type SyncRule struct {
 	// 自定义主键
 	CustomPKColumn string `yaml:"customPKColumn" json:"customPKColumn"`
 
-	// 序列化格式，仅支持: msgpack , json
+	// 序列化格式，支持: msgpack、json、yaml、protobuf
 	SerializationFormat string `yaml:"serializationFormat" json:"serializationFormat"`
 
 	// 包含的 表格 行 名称。为空，全部行
