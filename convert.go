@@ -34,6 +34,22 @@ func ConvertColumn(fieldNameFormat, column string) string {
 
 // ConvertSerializationFormat 转数据格式
 func ConvertSerializationFormat(format string, data map[string]interface{}) bytes.Buffer {
+	for key, val := range data {
+		switch newVal := val.(type) {
+		case int8:
+			data[key] = int32(newVal)
+			break
+		case []uint8:
+			data[key] = string(newVal)
+			break
+		case int16:
+			data[key] = int32(newVal)
+			break
+		case time.Time:
+			data[key] = ConvertTimeToString(newVal)
+			break
+		}
+	}
 	var buf bytes.Buffer
 	switch format {
 	case "msgpack":
@@ -43,19 +59,6 @@ func ConvertSerializationFormat(format string, data map[string]interface{}) byte
 		_ = yaml.NewEncoder(&buf).Encode(data)
 		break
 	case "protobuf":
-		for key, val := range data {
-			switch newVal := val.(type) {
-			case int8:
-				data[key] = int32(newVal)
-				break
-			case int16:
-				data[key] = int32(newVal)
-				break
-			case time.Time:
-				data[key] = newVal.Format(time.RFC3339)
-				break
-			}
-		}
 		pbVal, err := structpb.NewStruct(data)
 		if err != nil {
 			slog.Error("structpb.NewStruct protobuf value ", slog.Any("error", err))
@@ -116,5 +119,16 @@ func ConvertAnyToString(value interface{}) string {
 		return strconv.FormatFloat(v, 'g', -1, 64)
 	default:
 		return fmt.Sprintf("%v", value)
+	}
+}
+
+// ConvertTimeToString time 转 字符串
+func ConvertTimeToString(value time.Time) string {
+	if value.Hour() == 0 && value.Minute() == 0 && value.Second() == 0 {
+		return value.Format(time.DateOnly)
+	} else if value.Year() == 0 && value.Month() == 0 && value.Day() == 0 {
+		return value.Format(time.TimeOnly)
+	} else {
+		return value.Format(time.RFC3339)
 	}
 }
