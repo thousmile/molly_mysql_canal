@@ -124,7 +124,7 @@ fmt.Println(obj.String())
 ```
 
 ```shell
-docker run -d --name molly_mysql_canal -v /etc/molly_mysql_canal/config.yaml:/work/config.yaml --restart=always thousmile/molly_mysql_canal:1.0
+docker run -d --name molly_mysql_canal -v /etc/molly_mysql_canal/config.yaml:/work/config.yaml --restart=always thousmile/molly_mysql_canal:1.2
 ```
 
 vim docker-compose.yml
@@ -133,7 +133,7 @@ vim docker-compose.yml
 services:
 
   molly_mysql_canal:
-    image: thousmile/molly_mysql_canal:1.0
+    image: thousmile/molly_mysql_canal:1.2
     container_name: molly_mysql_canal
     volumes:
       - /etc/molly_mysql_canal/config.yaml:/work/config.yaml
