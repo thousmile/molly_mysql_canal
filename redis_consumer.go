@@ -93,12 +93,11 @@ func (c *RedisConsumer) insert(list []*EventData) {
 		b1 := len(c.IncludeColumnNames) > 0
 		b2 := len(c.ExcludeColumnNames) > 0
 		for column, value := range item.After {
-			if b1 && slices.Contains(c.IncludeColumnNames, column) {
-				newMap[ConvertColumn(c.FieldNameFormat, column)] = value
+			// 如果 IncludeColumnNames 不包含 字段。或者 ExcludeColumnNames 包含 字段。
+			if b1 && !slices.Contains(c.IncludeColumnNames, column) ||
+				b2 && slices.Contains(c.ExcludeColumnNames, column) {
+				continue
 			} else {
-				if b2 && slices.Contains(c.ExcludeColumnNames, column) {
-					continue
-				}
 				newMap[ConvertColumn(c.FieldNameFormat, column)] = value
 			}
 		}
