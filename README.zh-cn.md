@@ -51,6 +51,18 @@ redis:
   #sentinelUsername: sentinel123456
   #sentinelPassword: sentinel123456
 
+# es 配置
+elasticsearch:
+  addrs:
+    - http://192.168.0.111:9200
+    - http://192.168.0.112:9200
+    - http://192.168.0.113:9200
+  username: admin
+  password: admin123
+  # es 批量保存刷新时间，默认: 1s 
+  # 实时性要求不高，可以设置为 3s 或者 5s
+  flushInterval: 1s
+
 
 rules:
   - mysql_cms_device_to_redis:
@@ -106,10 +118,6 @@ rules:
 
         # es 索引名称
         indexName: ml_device
-
-        # es 批量保存刷新时间，默认: 1s 
-        # 实时性要求不高，可以设置为 3s 或者 5s
-        flushInterval: 1s
 
 ```
 

@@ -52,9 +52,21 @@ redis:
   #sentinelUsername: sentinel123456
   #sentinelPassword: sentinel123456
 
+# es config
+elasticsearch:
+  addrs:
+    - http://192.168.0.111:9200
+    - http://192.168.0.112:9200
+    - http://192.168.0.113:9200
+  username: admin
+  password: admin123
+  # es batch save, refresh time , default: 1s 
+  # The real-time requirement is not high, and it can be set to 3s or 5s
+  flushInterval: 1s
 
 rules:
-  - mysql_cms_device_to_redis:
+
+  - sync_cms_device:
       #expression： 
       #t_user table in all databases:                                           .*\.t_user
       #all tables in the canal database:                                        canal\..*
@@ -109,10 +121,6 @@ rules:
         
         # es index name
         indexName: ml_device
-        
-        # es batch save, refresh time , default: 1s 
-        # The real-time requirement is not high, and it can be set to 3s or 5s
-        flushInterval: 1s
 
 ```
 
