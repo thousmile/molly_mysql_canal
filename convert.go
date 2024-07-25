@@ -111,6 +111,12 @@ func upperCamelCase(input string) string {
 // ConvertAnyToString interface 转 字符串
 func ConvertAnyToString(value interface{}) string {
 	switch v := value.(type) {
+	case int8:
+		return strconv.Itoa(int(v))
+	case []uint8:
+		return string(v)
+	case int16:
+		return strconv.Itoa(int(v))
 	case string:
 		return v
 	case int:

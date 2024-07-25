@@ -4,55 +4,14 @@ mysql:
   addr: 192.168.0.188:3306
   username: canal
   password: canal
-  serverId: 88
+  serverId: 99
 
 redis:
   addrs:
     - 192.168.0.188:6379
   db: 5
-#  username: redis123
-#  password: redis123456
-#  masterName: mymaster
-#  sentinelUsername: sentinel123456
-#  sentinelPassword: sentinel123456
 
 rules:
-
-  # 同步产品类型
-  - mysql_ml_product_category_to_redis:
-      tableRegex: nicole_robin_pro.ml_product_category\b
-      initData: true
-      clearBeforeData: true
-      #fields to exclude
-      excludeColumnNames:
-        - create_time
-        - create_user
-        - last_update_time
-        - last_update_user
-      serializationFormat: msgpack
-      fieldNameFormat: lowerCamelCase
-      syncTarget: redis
-      redisRule:
-        keyName: ml_product_category
-        keyType: hash
-
-  # 同步产品详情
-  - mysql_ml_product_to_redis:
-      tableRegex: nicole_robin_pro.ml_product\b
-      initData: true
-      clearBeforeData: true
-      #fields to exclude
-      excludeColumnNames:
-        - create_time
-        - create_user
-        - last_update_time
-        - last_update_user
-      serializationFormat: msgpack
-      fieldNameFormat: lowerCamelCase
-      syncTarget: redis
-      redisRule:
-        keyName: ml_product
-        keyType: hash
 
   # 同步全局配置
   - mysql_sys_config_to_redis:
@@ -67,28 +26,4 @@ rules:
       syncTarget: redis
       redisRule:
         keyName: sys_config
-        keyType: hash
-
-  # 同步设备详情
-  - mysql_ml_device_to_redis:
-      tableRegex: nicole_robin_pro.ml_device\b
-      initData: true
-      clearBeforeData: true
-      customPKColumn: serial_number
-      includeColumnNames:
-        - device_id
-        - parent_id
-        - product_id
-        - area_id
-        - serial_number
-        - tenant_id
-        - project_id
-      excludeColumnNames:
-        - device_id
-        - parent_id
-      serializationFormat: msgpack
-      fieldNameFormat: lowerCamelCase
-      syncTarget: redis
-      redisRule:
-        keyName: ml_device
         keyType: hash

@@ -58,6 +58,9 @@ type AppConfig struct {
 	// redis 的配置
 	Redis RedisConfig `yaml:"redis" json:"redis"`
 
+	// elasticsearch 的配置
+	Elasticsearch ElasticsearchConfig `yaml:"elasticsearch" json:"elasticsearch"`
+
 	// 同步的规则
 	Rules map[string]SyncRule `yaml:"rules" json:"rules"`
 }
@@ -76,7 +79,7 @@ type SyncRule struct {
 	// 表用作ID 的名称
 	TableRegex string `yaml:"tableRegex" json:"tableRegex"`
 
-	// 同步的目的地 redis,
+	// 同步的目的地 redis、console、es7、es8
 	SyncTarget string `yaml:"syncTarget" json:"syncTarget"`
 
 	// 初始化数据
@@ -102,6 +105,9 @@ type SyncRule struct {
 
 	// redis 的配置
 	RedisRule SyncRedisRule `yaml:"redisRule" json:"redisRule"`
+
+	// elasticsearch 的配置
+	ElasticsearchRule SyncElasticsearchRule `yaml:"elasticsearchRule" json:"elasticsearchRule"`
 }
 
 type SyncRedisRule struct {
@@ -133,4 +139,21 @@ type RedisConfig struct {
 
 	// Sentinel password
 	SentinelPassword string `yaml:"sentinelPassword" json:"sentinelPassword" `
+}
+
+type SyncElasticsearchRule struct {
+	// es 的 index 名称
+	IndexName string `yaml:"indexName" json:"indexName"`
+}
+
+type ElasticsearchConfig struct {
+	// es 地址。默认: 127.0.0.1:9200
+	Addrs []string `yaml:"addrs" json:"addrs" `
+
+	Username string `yaml:"username" json:"username" `
+
+	Password string `yaml:"password" json:"password" `
+
+	// es 的 批量保存 间隔。默认 1s
+	FlushInterval string `yaml:"flushInterval" json:"flushInterval"`
 }

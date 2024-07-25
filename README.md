@@ -1,6 +1,6 @@
 ## molly_mysql_canal
 
-### sync mysql data to redis in mysql binlog format
+### sync mysql data to [redis、es7、es8] in mysql binlog format
 
 ## Quick Start
 
@@ -93,7 +93,7 @@ rules:
       #default: last_update_time
       fieldNameFormat: lowerCamelCase # lowerCamelCase、upperCamelCase、default
 
-      #sync destination，[redis、console]
+      #sync destination，[redis、console、es7、es8]
       syncTarget: redis
 
       #sync to redis
@@ -104,6 +104,15 @@ rules:
 
         #redis key type [string、hash]  default: string
         keyType: hash
+
+      elasticsearchRule:
+        
+        # es index name
+        indexName: ml_device
+        
+        # es batch save, refresh time , default: 1s 
+        # The real-time requirement is not high, and it can be set to 3s or 5s
+        flushInterval: 1s
 
 ```
 
@@ -124,7 +133,7 @@ fmt.Println(obj.String())
 ```
 
 ```shell
-docker run -d --name molly_mysql_canal -v /etc/molly_mysql_canal/config.yaml:/work/config.yaml --restart=always thousmile/molly_mysql_canal:1.2
+docker run -d --name molly_mysql_canal -v /etc/molly_mysql_canal/config.yaml:/work/config.yaml --restart=always thousmile/molly_mysql_canal:1.4
 ```
 
 vim docker-compose.yml
@@ -133,7 +142,7 @@ vim docker-compose.yml
 services:
 
   molly_mysql_canal:
-    image: thousmile/molly_mysql_canal:1.2
+    image: thousmile/molly_mysql_canal:1.4
     container_name: molly_mysql_canal
     volumes:
       - /etc/molly_mysql_canal/config.yaml:/work/config.yaml

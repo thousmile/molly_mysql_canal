@@ -1,6 +1,10 @@
 package main
 
 import (
+	es7 "github.com/elastic/go-elasticsearch/v7"
+	es7util "github.com/elastic/go-elasticsearch/v7/esutil"
+	es8 "github.com/elastic/go-elasticsearch/v8"
+	es8util "github.com/elastic/go-elasticsearch/v8/esutil"
 	"github.com/go-mysql-org/go-mysql/canal"
 	gomysql "github.com/go-mysql-org/go-mysql/mysql"
 	"github.com/redis/go-redis/v9"
@@ -9,6 +13,10 @@ import (
 
 var (
 	RedisClient       redis.UniversalClient
+	Es7Client         *es7.Client
+	Es7Bi             es7util.BulkIndexer
+	Es8Client         *es8.Client
+	Es8Bi             es8util.BulkIndexer
 	mysqlPosition     gomysql.Position
 	includeTableRegex []string
 	eventRules        []EventRule

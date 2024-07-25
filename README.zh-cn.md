@@ -1,4 +1,7 @@
 ## molly_mysql_canal
+
+### 同步mysql数据 至 [redis、es7、es8] 使用 mysql binlog format
+
 ### 必要条件
 
 ### mysql 需要开启如下配置。
@@ -87,7 +90,7 @@ rules:
       #default: last_update_time
       fieldNameFormat: lowerCamelCase # lowerCamelCase、upperCamelCase、default
 
-      #同步的目的地，redis、console
+      #同步的目的地，[redis、console、es7、es8]
       syncTarget: redis
 
       #同步到redis
@@ -98,6 +101,15 @@ rules:
 
         #redis中key的类型 string、hash
         keyType: hash   # string or hash
+
+      elasticsearchRule:
+
+        # es 索引名称
+        indexName: ml_device
+
+        # es 批量保存刷新时间，默认: 1s 
+        # 实时性要求不高，可以设置为 3s 或者 5s
+        flushInterval: 1s
 
 ```
 
@@ -118,7 +130,7 @@ fmt.Println(obj.String())
 ```
 
 ```shell
-docker run -d --name molly_mysql_canal -v /etc/molly_mysql_canal/config.yaml:/work/config.yaml --restart=always thousmile/molly_mysql_canal:1.2
+docker run -d --name molly_mysql_canal -v /etc/molly_mysql_canal/config.yaml:/work/config.yaml --restart=always thousmile/molly_mysql_canal:1.4
 ```
 
 vim docker-compose.yml
@@ -127,7 +139,7 @@ vim docker-compose.yml
 services:
 
   molly_mysql_canal:
-    image: thousmile/molly_mysql_canal:1.2
+    image: thousmile/molly_mysql_canal:1.4
     container_name: molly_mysql_canal
     volumes:
       - /etc/molly_mysql_canal/config.yaml:/work/config.yaml

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/go-mysql-org/go-mysql/canal"
 	gomysql "github.com/go-mysql-org/go-mysql/mysql"
+	slogGorm "github.com/orandin/slog-gorm"
 	"github.com/samber/lo"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -21,7 +22,7 @@ type MySqlPosition struct {
 func InitRules(mysqlCfg MysqlConfig) {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		mysqlCfg.Username, mysqlCfg.Password, mysqlCfg.Addr, "information_schema")
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{Logger: slogGorm.New()})
 	if err != nil {
 		slog.Error("connect mysql ", slog.Any("error", err))
 		panic(err)
@@ -73,6 +74,52 @@ WHERE
 				ExcludeColumnNames:  rule.ExcludeColumnNames,
 				FieldNameFormat:     rule.FieldNameFormat,
 				Logger:              slog.Default(),
+			}
+			go direct(c1, eventRule.Stream)
+			// 清空 之前的数据
+			if rule.ClearBeforeData {
+				c1.ClearBeforeData()
+			}
+			// 初始化 数据
+			if rule.InitData {
+				// 初始化数据
+				InitData(db, tableNames, reg, c1)
+			}
+			break
+		case "es7":
+			if Es7Client == nil {
+				CreateElasticsearch7Client()
+			}
+			c1 := &Elasticsearch7Consumer{
+				IndexName:          rule.ElasticsearchRule.IndexName,
+				CustomPKColumn:     rule.CustomPKColumn,
+				IncludeColumnNames: rule.IncludeColumnNames,
+				ExcludeColumnNames: rule.ExcludeColumnNames,
+				FieldNameFormat:    rule.FieldNameFormat,
+				Logger:             slog.Default(),
+			}
+			go direct(c1, eventRule.Stream)
+			// 清空 之前的数据
+			if rule.ClearBeforeData {
+				c1.ClearBeforeData()
+			}
+			// 初始化 数据
+			if rule.InitData {
+				// 初始化数据
+				InitData(db, tableNames, reg, c1)
+			}
+			break
+		case "es8":
+			if Es8Client == nil {
+				CreateElasticsearch8Client()
+			}
+			c1 := &Elasticsearch8Consumer{
+				IndexName:          rule.ElasticsearchRule.IndexName,
+				CustomPKColumn:     rule.CustomPKColumn,
+				IncludeColumnNames: rule.IncludeColumnNames,
+				ExcludeColumnNames: rule.ExcludeColumnNames,
+				FieldNameFormat:    rule.FieldNameFormat,
+				Logger:             slog.Default(),
 			}
 			go direct(c1, eventRule.Stream)
 			// 清空 之前的数据
